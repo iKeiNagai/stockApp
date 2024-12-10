@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stock_app/login.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             OutlinedButton(
               onPressed: (){
+                Navigator.push(context, 
+                MaterialPageRoute(builder: (context) => LoginPage()), );
               },
               child: const Text('login')
               ),
