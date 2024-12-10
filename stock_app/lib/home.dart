@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stock_app/login.dart';
+import 'package:stock_app/newsfeed.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -28,7 +29,10 @@ class _HomeState extends State<Home> {
               ),
             const SizedBox(height: 20),
             OutlinedButton(
-              onPressed: (){}, 
+              onPressed: (){
+                Navigator.push(context, 
+                MaterialPageRoute(builder: (context) => NewsPage()), );
+              }, 
               child: const Text('newsfeed')
               ),
             const SizedBox(height: 20),
