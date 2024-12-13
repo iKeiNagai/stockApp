@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'yahoo_finance_service.dart'; 
+import 'package:flutter/services.dart';
+
 
 class NewsPage extends StatefulWidget {
   @override
@@ -140,7 +142,18 @@ class _NewsPageState extends State<NewsPage> {
           children: [
             Text('Published Date: ${article['pubDate'] ?? 'Unknown Date'}'),
             SizedBox(height: 10),
-            Text('URL: $url'),
+            SelectableText('URL: $url'),  // Make URL selectable
+            SizedBox(height: 10),
+            ElevatedButton.icon(
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: url));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('URL copied to clipboard')),
+                );
+              },
+              icon: Icon(Icons.copy),
+              label: Text('Copy URL'),
+            ),
           ],
         ),
         actions: [
