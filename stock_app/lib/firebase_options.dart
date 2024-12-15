@@ -59,4 +59,5 @@ class DefaultFirebaseOptions {
     projectId: 'stocks-163e6',
     storageBucket: 'stocks-163e6.firebasestorage.app',
   );
+
 }
