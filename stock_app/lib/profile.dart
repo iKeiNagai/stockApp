@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -119,6 +120,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.of(context).pop(); 
   }
 
+  void _copyToClipboard(String url) {
+    Clipboard.setData(ClipboardData(text: url));
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('URL copied to clipboard')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,12 +188,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       itemCount: _savedArticles.length,
                       itemBuilder: (context, index) {
                         final article = _savedArticles[index];
+                        final url = article['url'] ?? 'No URL';
                         return ListTile(
                           title: Text(article['title'] ?? 'No Title'),
                           subtitle: Text(article['pubDate'] ?? 'Unknown Date'),
-                          trailing: Icon(Icons.link),
-                          onTap: () {
-                          },
+                          trailing: IconButton(
+                            onPressed: () => _copyToClipboard(url), 
+                            icon: Icon(Icons.copy))
                         );
                       },
                     ),
