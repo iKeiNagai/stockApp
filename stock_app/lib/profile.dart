@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'login.dart'; // Import your LoginScreen
 
 class ProfileScreen extends StatelessWidget {
   static const backgroundColor = Color(0xFF282A36);
@@ -81,8 +82,7 @@ class ProfileScreen extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
                 ),
                 onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushReplacementNamed('/login');
+                  _signOut(context);
                 },
                 child: Text(
                   'Sign Out',
@@ -93,6 +93,16 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _signOut(BuildContext context) {
+    FirebaseAuth.instance.signOut();
+    // Navigate to login and remove all previous routes from the stack
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (Route<dynamic> route) => false, // Remove all previous routes
     );
   }
 

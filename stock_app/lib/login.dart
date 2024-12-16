@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:stock_app/profile.dart';
 import 'package:stock_app/register.dart';
+import 'home2.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,18 +22,17 @@ class _LoginPageState extends State<LoginPage> {
 
       try {
         // Log in with email and password
-        await _auth.signInWithEmailAndPassword(email: email!, password: password!);
+        await _auth.signInWithEmailAndPassword(
+            email: email!, password: password!);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful')),
         );
 
-        Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfileScreen(),
-        ),
-      );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: ${e.toString()}')),
@@ -54,10 +54,9 @@ class _LoginPageState extends State<LoginPage> {
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) =>
-                    value!.isEmpty || !value.contains('@')
-                        ? 'Please enter a valid email'
-                        : null,
+                validator: (value) => value!.isEmpty || !value.contains('@')
+                    ? 'Please enter a valid email'
+                    : null,
                 onSaved: (value) => email = value,
               ),
               TextFormField(
@@ -73,10 +72,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: const Text('Login'),
               ),
               ElevatedButton(
-                onPressed:(){
-                  Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const RegistrationPage()));
-                }, child: const Text('Register'))
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegistrationPage()));
+                  },
+                  child: const Text('Register'))
             ],
           ),
         ),
