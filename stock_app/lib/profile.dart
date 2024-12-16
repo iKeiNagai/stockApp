@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'login.dart'; // Import your LoginScreen
 
 class ProfileScreen extends StatelessWidget {
@@ -70,7 +71,62 @@ class ProfileScreen extends StatelessWidget {
 
             SizedBox(height: 16),
 
-            // Preferences Section
+            // Saved Articles Section
+            _buildSection(
+              'Saved Articles',
+              [
+                StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(user?.uid)
+                      .collection('savedArticles')
+                      .orderBy('timestamp', descending: true)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(primaryColor),
+                        ),
+                      );
+                    }
+
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text(
+                          'No saved articles',
+                          style: TextStyle(color: secondaryTextColor),
+                        ),
+                      );
+                    }
+
+                    return Column(
+                      children: snapshot.data!.docs.map((doc) {
+                        final data = doc.data() as Map<String, dynamic>;
+                        return ListTile(
+                          title: Text(
+                            data['title'] ?? 'No Title',
+                            style: TextStyle(color: textColor),
+                          ),
+                          subtitle: Text(
+                            data['pubDate'] ?? 'Unknown Date',
+                            style: TextStyle(color: secondaryTextColor),
+                          ),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete, color: accentColor),
+                            onPressed: () {
+                              doc.reference.delete();
+                            },
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  },
+                ),
+              ],
+            ),
 
             SizedBox(height: 16),
 
