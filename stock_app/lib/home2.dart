@@ -137,6 +137,15 @@ class _HomeState extends State<Home> {
         backgroundColor: surfaceColor,
         title: Text('Portfolio', style: TextStyle(color: textColor)),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 67),
+        child: FloatingActionButton(
+          backgroundColor: primaryColor,
+          onPressed: () => _showAddPositionDialog(),
+          child: Icon(Icons.add, color: backgroundColor),
+        ),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firebaseService.getPortfolioStream(),
         builder: (context, snapshot) {
@@ -241,11 +250,6 @@ class _HomeState extends State<Home> {
             },
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: primaryColor,
-        onPressed: () => _showAddPositionDialog(),
-        child: Icon(Icons.add, color: backgroundColor),
       ),
     );
   }
